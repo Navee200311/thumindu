@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Birthday Surprise</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      font-family: 'Arial', sans-serif;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+    }
+
+    .stars, .stars::after {
+      content: '';
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+      background: transparent url('https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExaG9jcGh4cm85M29tY2N4dmQ2OWI2YmQwN3Rva3FrN3Vnd3Z3ejI1ZyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/FlodpfQUBSp20/giphy.gif') repeat;
+      background-size: cover;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .container {
+      position: relative;
+      z-index: 2;
+      text-align: center;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+      box-sizing: border-box;
+      overflow-y: auto;
+    }
+
+    .open-btn, .music-btn {
+      background: #ff4b2b;
+      color: white;
+      border: none;
+      padding: 20px 50px;
+      font-size: 2rem;
+      border-radius: 50px;
+      cursor: pointer;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+      transition: transform 0.2s, box-shadow 0.3s;
+      margin-top: 20px;
+    }
+
+    .open-btn:hover, .music-btn:hover {
+      transform: scale(1.1);
+      box-shadow: 0 8px 30px rgba(255,75,43,0.7);
+    }
+
+    .quote, .love-letter, .message, .final-surprise, .couple-img {
+      display: none;
+      position: relative;
+      z-index: 2;
+      animation: fadeIn 2s ease-in-out forwards;
+      margin: 10px auto;
+    }
+
+    .quote { font-size: 1.8rem; color: #ccc; }
+    .love-letter {
+      max-width: 600px;
+      font-size: 1.4rem;
+      color: #fff;
+      background: rgba(255,255,255,0.1);
+      padding: 20px;
+      border-radius: 20px;
+      text-shadow: 0 0 5px #000;
+      backdrop-filter: blur(5px);
+    }
+
+    .message {
+      font-size: 2.2rem;
+      color: #fff;
+      text-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+    }
+
+    .final-surprise {
+      font-size: 2.8rem;
+      color: #ffeb3b;
+      text-shadow: 0 0 20px #ff9800, 0 0 40px #ff5722;
+      animation: glow 2s infinite alternate, bounce 1.5s infinite;
+    }
+
+    .couple-img {
+      width: 200px;
+      max-width: 90%;
+      height: auto;
+    }
+
+    .orbit-heart {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform-origin: center;
+      animation: orbit 6s linear infinite;
+      font-size: 2rem;
+      z-index: 1;
+    }
+
+    .orbit-heart.right { animation-name: orbitRight; }
+    .orbit-heart.left { animation-name: orbitLeft; }
+
+    @keyframes orbitRight {
+      0% { transform: rotate(0deg) translateX(100px) rotate(-360deg); }
+      100% { transform: rotate(360deg) translateX(100px) rotate(-360deg); }
+    }
+
+    @keyframes orbitLeft {
+      0% { transform: rotate(0deg) translateX(-100px) rotate(360deg); }
+      100% { transform: rotate(-360deg) translateX(-100px) rotate(360deg); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #ffeb3b, 0 0 20px #ff9800, 0 0 30px #ff5722; }
+      to { text-shadow: 0 0 20px #ffff00, 0 0 40px #ff9800, 0 0 60px #ff5722; }
+    }
+
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-15px); }
+    }
+
+    .emoji, .heart {
+      position: absolute;
+      font-size: 2.2rem;
+      animation: float 10s linear infinite;
+      pointer-events: none;
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    @keyframes float {
+      0% { transform: translateY(100vh) rotate(0deg); }
+      100% { transform: translateY(-10vh) rotate(360deg); }
+    }
+
+    .heart {
+      color: #ff3366;
+      text-shadow: 0 0 10px #ff99aa, 0 0 20px #ff3366;
+    }
+
+    #yt-player-container {
+      width: 10px;
+      height: 10px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+
+    @media (max-width: 600px) {
+      .quote { font-size: 1.4rem; }
+      .love-letter { font-size: 1.2rem; padding: 15px; }
+      .message { font-size: 1.6rem; }
+      .final-surprise { font-size: 2rem; }
+      .open-btn, .music-btn { font-size: 1.2rem; padding: 15px 30px; }
+      .couple-img { width: 140px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stars"></div>
+  <div class="container">
+    <button class="open-btn" onclick="showMessage()">💌 OPEN ME 💌</button>
+    <div class="quote">"Distance means so little when someone means so much."</div>
+    <div class="love-letter">
+      From the first message to every goodnight text, you've made my world brighter.
+      One day, we'll close the distance. Until then, this is for you. ❤️
+    </div>
+    <img src="https://i.postimg.cc/QNFdx4hX/hands.avif" class="couple-img" id="coupleImg" />
+    <div class="orbit-heart left">💖</div>
+    <div class="orbit-heart right">💖</div>
+    <div class="final-surprise">🎂💖 Happy Birthday My Love 💖🎂</div>
+    <div class="message">❤️✨ I love you! You mean the world to me ✨❤️</div>
+    <button class="music-btn" onclick="playMusic()">🎵 Play Music</button>
+    <div id="yt-player-container" style="display: none;">
+  <iframe id="yt-player" width="10" height="10"
+    src="https://www.youtube.com/embed/Te8miNP7hAo?enablejsapi=1"
+    frameborder="0"
+    allow="autoplay; encrypted-media"
+    allowfullscreen>
+  </iframe>
+</div>
+
+  </div>
+
+  <script>
+    function createFloatingElements() {
+      for (let i = 0; i < 60; i++) {
+        let emoji = document.createElement('div');
+        emoji.classList.add('emoji');
+        emoji.innerHTML = ['🎉','🎂','❤️','🥳','💌','😘'][Math.floor(Math.random()*6)];
+        emoji.style.left = Math.random() * 100 + 'vw';
+        emoji.style.fontSize = (1.5 + Math.random() * 2) + 'rem';
+        emoji.style.animationDuration = (8 + Math.random() * 5) + 's';
+        document.body.appendChild(emoji);
+      }
+      for (let i = 0; i < 40; i++) {
+        let heart = document.createElement('div');
+        heart.classList.add('heart');
+        heart.innerHTML = '💖';
+        heart.style.left = Math.random() * 100 + 'vw';
+        heart.style.fontSize = (1.5 + Math.random() * 2) + 'rem';
+        heart.style.animationDuration = (10 + Math.random() * 6) + 's';
+        document.body.appendChild(heart);
+      }
+    }
+
+    function showMessage() {
+      document.querySelector('.open-btn').style.display = 'none';
+      document.querySelector('.quote').style.display = 'block';
+      document.querySelector('.love-letter').style.display = 'block';
+      document.querySelector('.message').style.display = 'block';
+      document.querySelector('.final-surprise').style.display = 'block';
+      document.getElementById('coupleImg').style.display = 'block';
+      createFloatingElements();
+    }
+
+    function playMusic() {
+  const playerContainer = document.getElementById('yt-player-container');
+  const iframe = document.getElementById('yt-player');
+  playerContainer.style.display = 'block';
+
+  // Use YouTube's JS API to play the video
+  const player = new YT.Player(iframe, {
+    events: {
+      onReady: function (event) {
+        event.target.playVideo();
+      }
+    }
+  });
+
+  document.querySelector('.music-btn').style.display = 'none';
+}
+
+  </script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+
+</body>
+</html>
